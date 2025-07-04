@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drug Sales Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 Drug Sales Forecast</h1>
+        <form method="POST">
+            <label for="forecast_date">Enter Future Date:</label>
+            <input type="date" name="forecast_date" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if is_df_prediction %}
+            <h2>Prediction for {{ selected_date }}</h2>
+            <table>
+                <tr>
+                    <th>Drug Code</th>
+                    <th>Predicted Sales</th>
+                </tr>
+                {% for drug, value in prediction.iterrows() %}
+                <tr>
+                    <td>{{ drug }}</td>
+                    <td>{{ "%.2f"|format(value['Predicted Sales']) }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% elif is_error %}
+            <p class="error">{{ prediction }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
